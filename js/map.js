@@ -246,6 +246,10 @@ function showMarker(markers) {
 	}
 }
 
+function markerClick(){
+	
+}
+
 /**
  * 绑定长按事件
  */
