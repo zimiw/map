@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+		<meta name="full-screen" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" type="text/css" href="css/map.css">
+		<script type="text/javascript" src="http://map.qq.com/api/js?v=2.exp&libraries=convertor"></script>
+		<style type="text/css">
+		</style>
+		<title>欢乐地图</title>
+	</head>
+
+	<body>
+		<form>
+			<input type="text" id="markerAddress"/>
+			<button>添加</button>
+		</form>
+		<section class="ui_map_con">
+			<audio id='audio' preload="auto">
+				<source src='' type="audio/mpeg"> Your browser does not support the audio tag.
+			</audio>
+			<!-- <img class="map_test" src="images/img.jpg"> <span
+			class="icon_adr"></span> -->
+			<div class="ui_map_top" style="display: none;">
+				<div class="ui_map_tip">
+					您目前所在的区域<span>单量最多</span>
+				</div>
+				<!-- <div class="ui_map_right">
+				<div class="icon_help e_help"></div>
+				<div class="icon_cdn_on e_cdn"></div>
+			</div> -->
+			</div>
+			<div class="ui_map_dtl" id="container">
+				<div class="road_cdn cur"></div>
+				<div id="routerDiv"></div>
+			</div>
+			<div class="ui_btm_box" style="display:none;">
+				<!-- 回到中心控件 -->
+				<!-- <span class="icon_restore"></span> -->
+				<div class="ui_map_btm e_line" style="display: none">
+					<span class="icon_close e_adr_close"></span>
+					<div class="ui_map_dtl">
+						<div class="ui_map_adr">
+							<ul>
+								<li class="ui_grey"><span class="icon_start"></span>我的位置</li>
+								<li><span class="icon_end"></span><span class="target_address"></span></li>
+							</ul>
+						</div>
+						<p class="ui_map_time"><i class="duration"></i><span class="distance"></span>
+						</p>
+					</div>
+				</div>
+				<div class="ui_map_btm ui_map_address">
+					<span class="icon_close e_adr_close"></span>
+					<div class="ui_map_dtl">
+						<div class="ui_map_adr">
+							<p class="ui_dir_address clearfix"><i class="target_address"></i><b class="e_dir">查看路线&nbsp></b></p>
+							<p class="ui_dir_dtl"><span class="distance"></span><span class="duration"></span><span class="current_address"></span></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<div class="tip_text" id="textOK" style="display: none">能收到您的建议简直太开心了</div>
+		<div class="tip_text" id="textEmpty" style="display: none">亲，请输入建议后再提交，拜托咯</div>
+		<!-- 遮罩层 -->
+		<div class="mask" style="display: none"></div>
+		<!-- 帮助页面 -->
+		<section class="popup" style="display: none">
+			<span class="icon_close e_popup_close"></span>
+			<div class="ui_help_dtl">
+				<div class="ui_help_top">
+					<h5>帮助说明</h5>
+					<img src="images/order_dtl1.jpg">
+					<ul>
+						<li><span class="icon_cdn"></span><b>路况开关，点击查看路况。关闭路况回到订单热图。</b></li>
+						<li><span class="icon_pos"></span><b>点按快速回到我的位置。</b></li>
+						<li><span class="icon_direction"></span><b>长按地图任意区域，可估算到此处行驶时间和距离。</b></li>
+					</ul>
+				</div>
+				<div class="ui_help_text clearfix">
+					<textarea class="e_submit_text" type="text" placeholder="我们非常期待听到您对订单热图的建议，请在此填写并提交。"></textarea>
+					<p class="count_num">
+						<i>1</i>/<b>100</b>
+					</p>
+				</div>
+				<input class="submit_btn" type="button" value="提交建议">
+			</div>
+		</section>
+
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/util.js"></script>
+		<script type="text/javascript" src="js/map.js"></script>
+		<script type="text/javascript" src="js/data.js" ></script>
+		<script type="text/javascript">
+			//路况点击效果js,路况上线时将此代码放出即可
+			$(document).ready(function() {
+				//关闭帮助弹出层
+				$(".e_popup_close").on("click", function() {
+					$(".popup").hide();
+					$(".mask").hide();
+				});
+	
+				//关闭地址栏
+				$(".e_adr_close").on("click", function() {
+					$(this).parent().hide();
+					$(".icon_restore").css({margin:"0px 5px 50px 0px"});
+					//清除地图上路线规划
+					if(drivingService != null){
+						drivingService.clear();
+					}
+					//隐藏终点标志图标
+					if(targetMarker != null){
+						targetMarker.setVisible(false);
+					}
+				})
+	
+				//查看路线
+				$(".e_dir").on('click', function() {
+					$(".ui_map_address").hide();
+					$(".e_line").show();
+					//在地图上绘制线路图
+					repaintRouter(DEFAULT_CENTER, TARGET_POSITION);
+				});
+				
+				//文本框内容判断
+				$(".e_submit_text").on('input',function(){
+					_this = $('.e_submit_text');
+					var length = _this.val().length;
+					if(length <=100){
+						$(".count_num i").text(length);
+					}else{
+						$(".e_submit_text").attr("disabled",true);
+					}
+				});
+				$(".e_submit_text").on('focus',function(){
+					$(this).attr("placeholder","")
+				});
+				
+				//绑定建议提交按钮事件
+				$(".submit_btn").on('click', function(){
+					submitAdvise();  //提交意见
+				});
+			});
+			//文本框内容判断
+			$(".e_submit_text").on('input',function(){
+				_this = $('.e_submit_text');
+				var length = _this.val().length;
+				if(length <=100){
+					$(".count_num i").text(length);
+				}else{
+					$(".e_submit_text").attr("disabled",true);
+					$(".count_num").css("color","#e3a51e");
+				}
+			});
+			$(".e_submit_text").on('focus',function(){
+				$(this).attr("placeholder","")
+			});
+			$(".e_submit_text").on('blur',function(){
+				$(this).attr("placeholder","我们非常期待听到您对订单热图的建议，请在此填写并提交。");
+			});
+			
+		</script>
+	</body>
+
+</html>
