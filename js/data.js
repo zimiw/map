@@ -15,6 +15,21 @@ var MAP_DATA = {
 			"introduction":'',
 			"comment":'',
 			"ranger" : ''
+		},{
+			"id" :'',
+			"name" : '龙悦堂',
+			"catagory" : "GM",
+			"url" : '',
+			"address" : '',
+			"cellphone" : '',
+			"tel" : '',
+			"qq" : '',
+			"img" : 'images/car1.png',
+			"lat" : 31.235655,
+			"lng" : 121.437812,
+			"introduction":'',
+			"comment":'',
+			"ranger" : ''
 		}
 	],
 	"apiPolygonContours" : [
