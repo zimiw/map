@@ -116,6 +116,8 @@ function showPosition(position) {
 		} else {
 			position = DEFAULT_CENTER;
 		}
+	}else{
+		 DEFAULT_CENTER = position;
 	}
 	//获取当前地点的地址
 	//getCurrentAdd(new qq.maps.LatLng(position.lat, position.lng));
@@ -222,64 +224,40 @@ function renderMap(pos, showCurrentPos) {
 	//bindLongPress();
 	showMarker(MAP_DATA.markers);
 }
+/**
+ * 页面图标的点击事件
+ */
+function markerClick(obj) {
+	
+	TARGET_POSITION = {
+		lat : obj.getLat(),
+		lng : obj.getLng()
+	}
+	var ends = {
+				start: DEFAULT_CENTER,
+				end: TARGET_POSITION
+			};
+	//显示路径相关信息
+	showRouter(ends);
 
+}
 /**
  * 在地图上展示标志点
  * @param {Object} markers
  */
 function showMarker(markers) {
-	/*var length = 0;
-	if (!$.isArray(markers) || (length = markers.length) < 1) {
-		return;
-	}
-	for (var i = 0; i < length; i++) {
-		var marker = new qq.maps.Marker({
-			map: map,
-			icon: new qq.maps.MarkerImage(markers[i].img || 'images/car1.png', null, null,
-				null, new qq.maps.Size(25, 30)),
-			position: new qq.maps.LatLng(markers[i].lat, markers[i].lng),
-			data : markers[i]
-		});
-		qq.maps.event.addListener(marker, 'click', markerClick);
-		markerArr.push(marker);
-	}*/
-	//var latlng = map.getCenter();
-	var latlngarr = [{
-		lat:31.234775,
-		lng:121.474512
-	},{
-		lat:31.232775,
-		lng:121.474612
-	},{
-		lat:31.235775,
-		lng:121.474412
-	},{
-		lat:31.233575,
-		lng:121.475412
-	},{
-		lat:31.233575,
-		lng:121.473512
-	},{
-		lat:31.233575,
-		lng:121.475612
-	},{
-		lat:31.233775,
-		lng:121.476712
-	}];
-	for(var length =latlngarr.length-1;length>=0;length-- ){
-		var latlng = new qq.maps.LatLng(latlngarr[length].lat, latlngarr[length].lng);
-		var overlay = new CustomOverlay(latlng, length);
+	
+	for(var length =markers.length-1;length>=0;length-- ){
+		var latlng = new qq.maps.LatLng(markers[length].lat, markers[length].lng);
+		var options = {
+			id:length,
+			name : markers[length].name,
+			categories : markers[length].categories
+		};
+		var overlay = new CustomOverlay(latlng, options, markerClick);
 		overlay.setMap(map);
 	}
 	
-}
-
-/**
- * 页面图标的点击事件
- */
-function markerClick() {
-	alert("坐标地址为： " + this.data.name);
-
 }
 
 /**

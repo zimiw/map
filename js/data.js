@@ -3,24 +3,28 @@ var MAP_DATA = {
 		{
 			"id" :'',
 			"name" : '帝圆',
+			"categories" : 'GM',
 			"img" : 'images/car1.png',
 			"lat" : 31.235425,
 			"lng" : 121.435412
 		},{
 			"id" :'',
 			"name" : '龙悦堂',
+			"categories" : 'G',
 			"img" : 'images/car2.png',
 			"lat" : 31.235655,
 			"lng" : 121.438812
 		},{
 			"id" :'',
 			"name" : '梦圆',
+			"categories" : 'SP',
 			"img" : 'images/icon_help.png',
 			"lat" : 31.235425,
-			"lng" : 121.435612
+			"lng" : 121.437812
 		},{
 			"id" :'',
 			"name" : '海湾',
+			"categories" : 'TY',
 			"img" : 'images/car1.png',
 			"lat" : 31.235655,
 			"lng" : 121.447812

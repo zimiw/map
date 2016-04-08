@@ -1,6 +1,10 @@
-function CustomOverlay(position, index) {
-            this.index = index;
+function CustomOverlay(position, options, callback) {
+			var id = 0;
+            this.index = options.id || id++;
+            this.name = options.name;
+            this.categories = options.categories;
             this.position = position;
+            this.callback = callback;
         }
         CustomOverlay.prototype = new qq.maps.Overlay();
          //定义construct,实现这个接口来初始化自定义的Dom元素
@@ -11,13 +15,15 @@ function CustomOverlay(position, index) {
             divStyle.width = "30px";
             divStyle.height = "30px";
             divStyle.backgroundColor = "red";
+            divStyle.fontSize = "8px";	
             divStyle.color = "white";
-            divStyle.border = "3px solid gray";
+            divStyle.padding = "2px";
+            divStyle.border = "2px solid gray";
             divStyle.textAlign = "center";
-            divStyle.lineHeight = "30px";
-            divStyle.borderRadius = "15px";
+            //divStyle.lineHeight = "12px";
+            divStyle.borderRadius = "18px";
             divStyle.cursor = "pointer";
-            this.div.innerHTML = "帝远";
+            this.div.innerHTML = this.name + this.categories;
             //将dom添加到覆盖物层
             var panes = this.getPanes();
             //设置panes的层级，overlayMouseTarget可接收点击事件
@@ -25,7 +31,7 @@ function CustomOverlay(position, index) {
 
             var self = this;
             this.div.onclick = function() {
-                alert(self.index);
+                self.callback(self.position);
             }
         }
          //实现draw接口来绘制和更新自定义的dom元素
