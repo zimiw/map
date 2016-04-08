@@ -10,7 +10,7 @@ if (window.DriverBridge) {
 //默认的中心坐标
 var DEFAULT_CENTER = {
 	'lat': 31.231706,
-	'lng': 121.437945
+	'lng': 121.472644
 };
 
 //起始点地址
@@ -85,19 +85,21 @@ var targetMarker = null;
 //获取当前坐标
 function getLocation() {
 
-	if (navigator.geolocation) {
+	/*if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(gpsPosition, showError);
 	} else {
 		alert("Geolocation is not supported by this browser.")
-	}
+	}*/
+	//浏览器调试流程，简化了避开了gps定位
+	showPosition(null);
 }
 
 function gpsPosition(position) {
+
 	myPosition = {
 		lat: position.coords.latitude,
 		lng: position.coords.longitude
 	}
-	$("#x").html("latitude is:" + position.coords.latitude + "longitude is: " + position.coords.longitude);
 	showPosition(myPosition);
 }
 
@@ -137,7 +139,7 @@ function showError(error) {
 			alert("An unknown error occurred.");
 			break;
 	}
-	showPosition(DEFAULT_CENTER);
+	showPosition(null);
 }
 
 /**
@@ -196,7 +198,7 @@ function renderMap(pos, showCurrentPos) {
 	map = new qq.maps.Map(document.getElementById("container"), {
 		// 地图的中心地理坐标。
 		center: new qq.maps.LatLng(pos.lat, pos.lng),
-		zoom: 15, // 缩放级别
+		zoom: 16, // 缩放级别
 		zoomControl: false,
 		panControl: false,
 		mapTypeControl: false,
@@ -226,7 +228,7 @@ function renderMap(pos, showCurrentPos) {
  * @param {Object} markers
  */
 function showMarker(markers) {
-	var length = 0;
+	/*var length = 0;
 	if (!$.isArray(markers) || (length = markers.length) < 1) {
 		return;
 	}
@@ -235,19 +237,49 @@ function showMarker(markers) {
 			map: map,
 			icon: new qq.maps.MarkerImage(markers[i].img || 'images/car1.png', null, null,
 				null, new qq.maps.Size(25, 30)),
-			position: new qq.maps.LatLng(markers[i].lat, markers[i].lng)
+			position: new qq.maps.LatLng(markers[i].lat, markers[i].lng),
+			data : markers[i]
 		});
-		var name = markers[i].name;
-		//点击Marker会弹出反查结果
-		qq.maps.event.addListener(marker, 'click', function() {
-			alert("坐标地址为： " + name);
-		});
+		qq.maps.event.addListener(marker, 'click', markerClick);
 		markerArr.push(marker);
+	}*/
+	//var latlng = map.getCenter();
+	var latlngarr = [{
+		lat:31.234775,
+		lng:121.474512
+	},{
+		lat:31.232775,
+		lng:121.474612
+	},{
+		lat:31.235775,
+		lng:121.474412
+	},{
+		lat:31.233575,
+		lng:121.475412
+	},{
+		lat:31.233575,
+		lng:121.473512
+	},{
+		lat:31.233575,
+		lng:121.475612
+	},{
+		lat:31.233775,
+		lng:121.476712
+	}];
+	for(var length =latlngarr.length-1;length>=0;length-- ){
+		var latlng = new qq.maps.LatLng(latlngarr[length].lat, latlngarr[length].lng);
+		var overlay = new CustomOverlay(latlng, length);
+		overlay.setMap(map);
 	}
+	
 }
 
-function markerClick(){
-	
+/**
+ * 页面图标的点击事件
+ */
+function markerClick() {
+	alert("坐标地址为： " + this.data.name);
+
 }
 
 /**

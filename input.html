@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>TransferAddress</title>
+		<script type="text/javascript" src="http://map.qq.com/api/js?v=2.exp"></script>
+	</head>
+	<body>
+		<label>Address:</label>
+		<textarea style="width: 500px;height: 300px;" id="address"></textarea>
+		<button onclick="tranfer()">Transform</button>
+		<label>latlng:</label>
+		<textarea style="width: 500px;height: 300px;" id="latlng"></textarea>
+	</body>
+	<script type="text/javascript" src="js/jquery.js" ></script>
+	<script>
+	
+		var jsonForm = [];
+		var strFormArr = [];
+		function tranfer(){
+			var value = $.trim($("#address").val());
+			var valueArr = value.split("\n");
+			$("#latlng").empty();
+			
+			//地址和经纬度之间进行转换服务
+			for(var i=0,length=valueArr.length;i<length;i++){
+				
+				var geocoder = new qq.maps.Geocoder();
+				//对指定地址进行解析
+                geocoder.getLocation(valueArr[i]);
+               
+                //设置服务请求成功的回调函数
+                geocoder.setComplete(function(result) {
+                	//reprensentFormJson(result);
+                	//representFormStr(result);
+                	representFormPage(result);
+                });
+                //若服务请求失败，则运行以下函数
+                geocoder.setError(function() {
+                    alert("出错了，请输入正确的地址！！！");
+                });
+			}
+		}
+		function reprensentFormJson(obj){
+			var temp = {};
+				temp.address = obj.detail.address;
+				temp.latlng = new qq.maps.LatLng(obj.detail.position.getLat(),obj.detail.position.getLng());
+			jsonForm.push(temp);
+			return jsonForm;
+		}
+		function representFormStr(obj){
+			var loc = obj.detail.location;
+            var locationStr = obj.detail.address + ":" + loc.getLat() + "," + loc.getLng();
+            strFormArr.push(locationStr);
+            return strFormArr.join(";");
+		}
+		
+		function representFormPage(obj){
+			var loc = obj.detail.location;
+            var locationStr = obj.detail.address + ":" + loc.getLat() + "," + loc.getLng();
+            $("#latlng").append("\n"+locationStr);
+		}
+	</script>
+</html>

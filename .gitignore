@@ -1,0 +1,17 @@
+/.settings/
+/target/
+.project
+.classpath
+*.pid
+target/
+
+
+/resource-api/.settings
+/resource-common/.settings
+/resource-mis/.settings
+/resource-srv-config/.settings
+/resource-srv-interface/.settings
+/resource-srv-price/.settings
+/resource-srv-product/.settings
+/resource-srv-setting/.settings
+/resource-srv-storage/.settings
