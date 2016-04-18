@@ -57,7 +57,7 @@
 		
 		function representFormPage(obj){
 			var loc = obj.detail.location;
-            var locationStr = obj.detail.address + ":" + loc.getLat() + "," + loc.getLng();
+            var locationStr = obj.detail.address + ":  lat " + loc.getLat() + "," + loc.getLng();
             $("#latlng").append("\n"+locationStr);
 		}
 	</script>

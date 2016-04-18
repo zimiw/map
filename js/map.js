@@ -85,13 +85,13 @@ var targetMarker = null;
 //获取当前坐标
 function getLocation() {
 
-	/*if (navigator.geolocation) {
+	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(gpsPosition, showError);
 	} else {
 		alert("Geolocation is not supported by this browser.")
-	}*/
+	}
 	//浏览器调试流程，简化了避开了gps定位
-	showPosition(null);
+	//showPosition(null);
 }
 
 function gpsPosition(position) {
@@ -252,7 +252,7 @@ function showMarker(markers) {
 		var options = {
 			id:length,
 			name : markers[length].name,
-			categories : markers[length].categories
+			categories : markers[length].category
 		};
 		var overlay = new CustomOverlay(latlng, options, markerClick);
 		overlay.setMap(map);
