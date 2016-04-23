@@ -1,0 +1,27 @@
+{
+  "name": "happymap",
+  "version": "1.0.0",
+  "description": "just for fun",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zimiw/map.git"
+  },
+  "keywords": [
+    "happymap"
+  ],
+  "author": "jimmy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zimiw/map/issues"
+  },
+  "homepage": "https://github.com/zimiw/map#readme",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-uglify": "^1.5.3"
+  }
+}
