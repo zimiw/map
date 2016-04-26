@@ -2,6 +2,7 @@ function CustomOverlay(position, options, callback) {
 			var id = 0;
             this.index = options.id || id++;
             this.name = options.name;
+            this.address = options.address || '';
             this.categories = options.categories;
             this.position = position;
             this.callback = callback;
@@ -31,7 +32,7 @@ function CustomOverlay(position, options, callback) {
 
             var self = this;
             this.div.onclick = function() {
-                self.callback(self.position);
+                self.callback(self.position,self.address);
             }
         }
          //实现draw接口来绘制和更新自定义的dom元素

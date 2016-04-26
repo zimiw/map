@@ -85,13 +85,13 @@ var targetMarker = null;
 //获取当前坐标
 function getLocation() {
 
-	if (navigator.geolocation) {
+	/*if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(gpsPosition, showError);
 	} else {
 		alert("Geolocation is not supported by this browser.")
-	}
+	}*/
 	//浏览器调试流程，简化了避开了gps定位
-	//showPosition(null);
+	showPosition(null);
 }
 
 function gpsPosition(position) {
@@ -218,7 +218,7 @@ function renderMap(pos, showCurrentPos) {
 	}
 
 	//展示控件
-	//showControllers();
+	showControllers();
 
 	//点击事件测试
 	//bindLongPress();
@@ -227,7 +227,7 @@ function renderMap(pos, showCurrentPos) {
 /**
  * 页面图标的点击事件
  */
-function markerClick(obj) {
+function markerClick(obj,address) {
 	
 	TARGET_POSITION = {
 		lat : obj.getLat(),
@@ -235,7 +235,8 @@ function markerClick(obj) {
 	}
 	var ends = {
 				start: DEFAULT_CENTER,
-				end: TARGET_POSITION
+				end: TARGET_POSITION,
+				address: address
 			};
 	//显示路径相关信息
 	showRouter(ends);
@@ -252,7 +253,8 @@ function showMarker(markers) {
 		var options = {
 			id:length,
 			name : markers[length].name,
-			categories : markers[length].category
+			categories : markers[length].category,
+			address : markers[length].address
 		};
 		var overlay = new CustomOverlay(latlng, options, markerClick);
 		overlay.setMap(map);
@@ -313,11 +315,10 @@ function bindLongPress() {
  * @param obj
  */
 function showRouter(obj) {
-
 	var startLat = new qq.maps.LatLng(obj.start.lat, obj.start.lng),
 		endLat = new qq.maps.LatLng(obj.end.lat, obj.end.lng),
-		policy = obj.policy || qq.maps.DrivingPolicy.REAL_TRAFFIC;
-
+		policy = obj.policy || qq.maps.DrivingPolicy.REAL_TRAFFIC,
+		address = obj.address || "";
 	//清除地图上路线规划
 	if (drivingService != null) {
 		drivingService.clear();
@@ -337,7 +338,7 @@ function showRouter(obj) {
 			//设置服务请求成功的回调函数
 			complete: function(result) {
 				//展示路径提示信息页面
-				showRouterInfo(outResult.distance, outResult.duration, result.detail.address);
+				showRouterInfo(outResult.distance, outResult.duration, address||result.detail.address);
 				//改变回到中心控件的位置
 				$(".icon_restore").css({
 					margin: "0px 5px 100px 0px"
