@@ -23,7 +23,7 @@ gulp.task('jsmin', function () {
             mangle: true,//类型：Boolean 默认：true 是否修改变量名
             compress: true,//类型：Boolean 默认：true 是否完全压缩
             preserveComments: 'license' //保留所有注释
-        }))
+        })) .pipe(concat('all.js'))
         .pipe(gulp.dest('dist/js'));
 });
 

@@ -1,1 +1,0 @@
-function Marker(i){var t=0;this.id=i.id||t++,this.title=i.title||"Title"+this.id,this.name=i.name}

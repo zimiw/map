@@ -1,4 +1,4 @@
-//在司机端中设置标题
+
 if (window.DriverBridge) {
 	try {
 		window.DriverBridge.setWebViewTitle("订单热图");
@@ -85,13 +85,12 @@ var targetMarker = null;
 //获取当前坐标
 function getLocation() {
 
-	/*if (navigator.geolocation) {
+	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(gpsPosition, showError);
 	} else {
 		alert("Geolocation is not supported by this browser.")
-	}*/
-	//浏览器调试流程，简化了避开了gps定位
-	showPosition(null);
+	}
+	//showPosition(null);
 }
 
 function gpsPosition(position) {
